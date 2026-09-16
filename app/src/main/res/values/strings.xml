@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Smart Pantry Manager</string>
+    <string name="update_item">Update Item</string>
+    <string name="no_recipes_message">No recipes match your pantry yet. Add more ingredients</string>
 </resources>
