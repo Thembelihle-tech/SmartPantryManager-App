@@ -206,6 +206,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addRecipe(db, "Banana & Milk Smoothie",
                 "1. Blend banana and milk together. 2. Pour into a glass. 3. Serve cold.",
                 new Object[][]{{"banana", 2, "pcs"}, {"milk", 250, "ml"}});
+        addRecipe(db, "Butter Roti",
+                "1. Swift flour. 2. Rub in butter until breadcrumbs. 3. Add boiling water. 4. Roll and toast. 5. Enjoy!",
+                new Object[][]{{"flour", 2, "c"}, {"salt", 1, "tsp"}, {"butter", 8, "tsp"}, {"water", 1, "c"}});
     }
 
     private void addRecipe(SQLiteDatabase db, String name, String steps, Object[][] ingredients) {
