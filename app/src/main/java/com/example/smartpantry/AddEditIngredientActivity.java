@@ -82,7 +82,7 @@ public class AddEditIngredientActivity extends AppCompatActivity{
             Toast.makeText(this, "Ingredient added", Toast.LENGTH_SHORT).show();
         }else{
             dbHelper.updateIngredient(ingredient);
-            Toast.makeText(this, "Ingredient updated", Toast.LENGHT_SHORT).show();
+            Toast.makeText(this, "Ingredient updated", Toast.LENGTH_SHORT).show();
         }
         finish();
     }
