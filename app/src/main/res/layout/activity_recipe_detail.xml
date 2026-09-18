@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarRecipeDetail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:title="Recipe Detail"
+        android:titleTextColor="#FFFFFF"
+        app:navigationIcon="@drawable/ic_close_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textRecipeDetailName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Ingredients"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textRecipeDetailIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Method"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textRecipeDetailSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
