@@ -14,11 +14,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SuggestedRecipesActivity extends AppCompatActivity{
+public class SuggestedRecipesActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggested_recipes);
 
@@ -31,53 +31,55 @@ public class SuggestedRecipesActivity extends AppCompatActivity{
         List<Ingredients> pantry = dbHelper.getAllIngredients();
         List<Recipes> allRecipes = dbHelper.getAllRecipes();
         List<Recipes> matches = new ArrayList<>();
-        for(Recipes recipe : allRecipes){
-            if (recipeIsFullyCovered(recipe, pantry)){
+        for (Recipes recipe : allRecipes) {
+            if (recipeIsFullyCovered(recipe, pantry)) {
                 matches.add(recipe);
             }
         }
 
-        if (matches.isEmpty()){
+        if (matches.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else{
+        } else {
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             RecipeAdapter adapter = new RecipeAdapter(matches, recipe -> {
                 Intent intent = new Intent(this, RecipeDetailActivity.class);
                 intent.putExtra("recipe_id", recipe.getId());
+                startActivity(intent);
             });
             recyclerView.setAdapter(adapter);
         }
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+        bottomNav.setSelectedItemId(R.id.nav_recipes);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_pantry) {
+                startActivity(new Intent(this, PantryListActivity.class));
+                return true;
+            } else if (id == R.id.nav_recipes) {
+                return true;
+            } else if (id == R.id.nav_settings) {
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            }
+            return false;
+        });
     }
-    BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
-    bottomNav.setSelectedItemId(R.id.nav_recipes);
-    bottomNav.setOnItemselectedListener(item -> {
-        int id = item.getItemId();
-        if (id == R.id.nav_pantry){
-            startActivity(new Intent(this, PantryListActivity.class));
-            return true;
-        }else if(id == R.id.nav_recipes){
-            return true;
-        }else if(id == R.id.nav_settings){
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-        return false;
-    });
-}
-private boolean recipeIsFullyCovered(Recipes recipe, List<Ingredients> pantry){
-    for (RecipeIngredients required : recipe.getIngredients()){
-        boolean covered = false;
-        for (Ingredients pantryItem : pantry){
-            if (MatchingUtils.pantryCovers(pantryItem, required)){
-                covered = true;
-                break;
+
+    private boolean recipeIsFullyCovered(Recipes recipe, List<Ingredients> pantry) {
+        for (RecipeIngredients required : recipe.getIngredients()) {
+            boolean covered = false;
+            for (Ingredients pantryItem : pantry) {
+                if (MatchingUtils.pantryCovers(pantryItem, required)) {
+                    covered = true;
+                    break;
+                }
+            }
+            if (!covered) {
+                return false;
             }
         }
-        if(!covered){
-            return false;
-        }
+        return true;
     }
-    return true;
 }
