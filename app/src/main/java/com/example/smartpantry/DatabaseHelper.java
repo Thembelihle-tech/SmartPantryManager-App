@@ -175,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "1. Melt butter. 2. Fry garlic. 3. Mix in cooked rice, season, serve.",
                 new Object[][]{{"rice", 200, "g"}, {"garlic", 3, "pcs"}, {"butter", 20, "g"}});
 
-        addRecipe(db, "Chicken Sandwich with lettuce",
+        addRecipe(db, "Chicken Sandwich",
                 "1. Slice cooked chicken. 2. Layer between bread with lettuce. 3. Serve.",
                 new Object[][]{{"bread", 2, "pcs"}, {"chicken", 100, "g"}, {"lettuce", 1, "pcs"}});
 
@@ -206,6 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addRecipe(db, "Banana & Milk Smoothie",
                 "1. Blend banana and milk together. 2. Pour into a glass. 3. Serve cold.",
                 new Object[][]{{"banana", 2, "pcs"}, {"milk", 250, "ml"}});
+
         addRecipe(db, "Butter Roti",
                 "1. Swift flour. 2. Rub in butter until breadcrumbs. 3. Add boiling water. 4. Roll and toast. 5. Enjoy!",
                 new Object[][]{{"flour", 2, "c"}, {"salt", 1, "tsp"}, {"butter", 8, "tsp"}, {"water", 1, "c"}});
