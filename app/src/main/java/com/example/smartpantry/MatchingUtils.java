@@ -13,6 +13,8 @@ public class MatchingUtils {
         UNIT_TABLE.put("", new Object[]{"pcs", 1.0});
         UNIT_TABLE.put("c", new Object[]{"cup", 1.0});
         UNIT_TABLE.put("cup", new Object[]{"cup", 1.0});
+        UNIT_TABLE.put("tsp", new Object[]{"tsp", 1.0});
+        UNIT_TABLE.put("tbsp", new Object[]{"tsp", 2.0});
     }
 
     public static String normalizeName(String rawName) {
