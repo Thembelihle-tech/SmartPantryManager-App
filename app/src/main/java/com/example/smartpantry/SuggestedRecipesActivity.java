@@ -67,7 +67,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity{
     });
 }
 private boolean recipeIsFullyCovered(Recipes recipe, List<Ingredients> pantry){
-    for (RecipeIngredient required : recipe.getIngredients()){
+    for (RecipeIngredients required : recipe.getIngredients()){
         boolean covered = false;
         for (Ingredients pantryItem : pantry){
             if (MatchingUtils.pantryCovers(pantryItem, required)){

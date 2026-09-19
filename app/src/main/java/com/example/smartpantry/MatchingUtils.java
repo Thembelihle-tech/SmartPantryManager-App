@@ -11,18 +11,20 @@ public class MatchingUtils {
         UNIT_TABLE.put("l", new Object[]{"ml", 1000.0});
         UNIT_TABLE.put("pcs", new Object[]{"pcs", 1.0});
         UNIT_TABLE.put("", new Object[]{"pcs", 1.0});
-        UNIT_TABLE.put("", new Object[]{"c", 1.0});
+        UNIT_TABLE.put("c", new Object[]{"cup", 1.0});
+        UNIT_TABLE.put("cup", new Object[]{"cup", 1.0});
     }
 
     public static String normalizeName(String rawName) {
         if (rawName == null) return "";
         String n = rawName.trim().toLowerCase();
-        if (n.endsWith("es") && n.length() > 4) {
+        if (n.endsWith("ies") && n.length() > 4) {
+            n = n.substring(0, n.length() - 3) + "y";
+        } else if ((n.endsWith("oes") || n.endsWith("ches") || n.endsWith("shes")) && n.length() > 4) {
             n = n.substring(0, n.length() - 2);
-        } else if (n.endsWith("s") && n.length() > 3) {
+        }else if (n.endsWith("s") && !n.endsWith("ss") && n.length() > 3){
             n = n.substring(0, n.length() - 1);
-        if (n.equals("tomatoe")) n = "tomato";
-        if (n.equals("potatoe")) n = "potato";
+        }
         return n;
     }
     private static String normalizeUnit(String unit) {
@@ -39,7 +41,7 @@ public class MatchingUtils {
         return entry == null ? normalizeUnit(unit) : (String) entry[0];
     }
 
-    public static boolean pantryCovers(Ingredient pantryItem, RecipeIngredient required) {
+    public static boolean pantryCovers(Ingredients pantryItem, RecipeIngredients required) {
         if (pantryItem == null) return false;
         boolean namesMatch = normalizeName(pantryItem.getName())
                 .equals(normalizeName(required.getName()));
