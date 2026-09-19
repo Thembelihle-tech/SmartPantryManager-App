@@ -11,7 +11,7 @@
         android:background="@color/primary"
         android:title="Add / Edit Ingredient"
         android:titleTextColor="#FFFFFF"
-        app:navigationIcon="@drawable/ic_back_close"
+        app:navigationIcon="@drawable/ic_close_back"
         xmlns:app="http://schemas.android.com/apk/res-auto" />
 
     <LinearLayout
