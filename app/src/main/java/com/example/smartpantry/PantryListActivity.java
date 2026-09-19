@@ -26,9 +26,9 @@ public class PantryListActivity extends AppCompatActivity implements PantryAdapt
         recyclerView = findViewById(R.id.recyclerPantry);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton fab = findViewById(R.id.recyclerPantry);
+        FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
         fab.setOnClickListener(v ->
-                startActivity(new Intent(this, AddEditingIngredientActivity.class)));
+                startActivity(new Intent(this, AddEditIngredientActivity.class)));
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setSelectedItemId(R.id.nav_pantry);
         bottomNav.setOnItemSelectedListener(item -> {
