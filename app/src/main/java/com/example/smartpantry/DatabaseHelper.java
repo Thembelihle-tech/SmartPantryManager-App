@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "smart_pantry.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public static final String TABLE_PANTRY = "pantry_items";
     public static final String TABLE_RECIPES = "recipes";
@@ -31,6 +31,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "unit TEXT NOT NULL, " +
                 "expiry_date TEXT)");
 
+        createRecipeTables(db);
+        seedRecipes(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_INGREDIENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
+
+        createRecipeTables(db);
+        seedRecipes(db);
+    }
+
+    private void createRecipeTables(SQLiteDatabase db){
         db.execSQL("CREATE TABLE " + TABLE_RECIPES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL, " +
@@ -40,21 +54,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "recipe_id INTEGER NOT NULL, " +
                 "name TEXT NOT NULL, " +
-                "quantity REAL NOT NULL, " +
                 "unit TEXT NOT NULL, " +
                 "FOREIGN KEY(recipe_id) REFERENCES " + TABLE_RECIPES + "(id))");
-
-        seedRecipes(db);
     }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_INGREDIENTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PANTRY);
-        onCreate(db);
-    }
-
 
     public long addIngredient(Ingredients item) {
         SQLiteDatabase db = getWritableDatabase();
