@@ -12,7 +12,8 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "smart_pantry.db";
-    private static final int DB_VERSION = 2;
+
+    private static final int DB_VERSION = 3;
 
     public static final String TABLE_PANTRY = "pantry_items";
     public static final String TABLE_RECIPES = "recipes";
@@ -39,12 +40,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_INGREDIENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
-
         createRecipeTables(db);
         seedRecipes(db);
     }
 
-    private void createRecipeTables(SQLiteDatabase db){
+    private void createRecipeTables(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_RECIPES + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL, " +
@@ -54,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "recipe_id INTEGER NOT NULL, " +
                 "name TEXT NOT NULL, " +
+                "quantity REAL NOT NULL, " +
                 "unit TEXT NOT NULL, " +
                 "FOREIGN KEY(recipe_id) REFERENCES " + TABLE_RECIPES + "(id))");
     }
@@ -107,7 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-
     public List<Recipes> getAllRecipes() {
         List<Recipes> recipes = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -137,8 +137,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         return list;
     }
-
-
 
     private void seedRecipes(SQLiteDatabase db) {
         addRecipe(db, "Simple Ice Cream",

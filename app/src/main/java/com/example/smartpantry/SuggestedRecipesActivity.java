@@ -16,10 +16,8 @@ import java.util.List;
 
 public class SuggestedRecipesActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
-
     private RecyclerView recyclerView;
     private TextView emptyView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +29,6 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerSuggested);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         emptyView = findViewById(R.id.textEmptySuggestions);
-
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setSelectedItemId(R.id.nav_recipes);
@@ -51,24 +48,24 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         refreshSuggestions();
     }
 
-    private void refreshSuggestions(){
+    private void refreshSuggestions() {
         List<Ingredients> pantry = dbHelper.getAllIngredients();
         List<Recipes> allRecipes = dbHelper.getAllRecipes();
         List<Recipes> matches = new ArrayList<>();
-        for(Recipes recipe : allRecipes){
-            if(MatchingUtils.recipeIsCovered(recipe, pantry)){
+        for (Recipes recipe : allRecipes) {
+            if (MatchingUtils.recipeIsCovered(recipe, pantry)) {
                 matches.add(recipe);
             }
         }
-        if(matches.isEmpty()){
+        if (matches.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else{
+        } else {
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             RecipeAdapter adapter = new RecipeAdapter(matches, recipe -> {
