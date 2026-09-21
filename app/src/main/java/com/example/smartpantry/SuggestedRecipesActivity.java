@@ -17,6 +17,10 @@ import java.util.List;
 public class SuggestedRecipesActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
+    private RecyclerView recyclerView;
+    private TextView emptyView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,32 +28,11 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerSuggested);
+        recyclerView = findViewById(R.id.recyclerSuggested);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        TextView emptyView = findViewById(R.id.textEmptySuggestions);
+        emptyView = findViewById(R.id.textEmptySuggestions);
 
-        List<Ingredients> pantry = dbHelper.getAllIngredients();
-        List<Recipes> allRecipes = dbHelper.getAllRecipes();
-        List<Recipes> matches = new ArrayList<>();
-        for (Recipes recipe : allRecipes) {
-            if (recipeIsFullyCovered(recipe, pantry)) {
-                matches.add(recipe);
-            }
-        }
 
-        if (matches.isEmpty()) {
-            emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            emptyView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            RecipeAdapter adapter = new RecipeAdapter(matches, recipe -> {
-                Intent intent = new Intent(this, RecipeDetailActivity.class);
-                intent.putExtra("recipe_id", recipe.getId());
-                startActivity(intent);
-            });
-            recyclerView.setAdapter(adapter);
-        }
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setSelectedItemId(R.id.nav_recipes);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -67,19 +50,33 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         });
     }
 
-    private boolean recipeIsFullyCovered(Recipes recipe, List<Ingredients> pantry) {
-        for (RecipeIngredients required : recipe.getIngredients()) {
-            boolean covered = false;
-            for (Ingredients pantryItem : pantry) {
-                if (MatchingUtils.pantryCovers(pantryItem, required)) {
-                    covered = true;
-                    break;
-                }
-            }
-            if (!covered) {
-                return false;
+    @Override
+    protected void onResume(){
+        super.onResume();
+        refreshSuggestions();
+    }
+
+    private void refreshSuggestions(){
+        List<Ingredients> pantry = dbHelper.getAllIngredients();
+        List<Recipes> allRecipes = dbHelper.getAllRecipes();
+        List<Recipes> matches = new ArrayList<>();
+        for(Recipes recipe : allRecipes){
+            if(MatchingUtils.recipeIsCovered(recipe, pantry)){
+                matches.add(recipe);
             }
         }
-        return true;
+        if(matches.isEmpty()){
+            emptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }else{
+            emptyView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            RecipeAdapter adapter = new RecipeAdapter(matches, recipe -> {
+                Intent intent = new Intent(this, RecipeDetailActivity.class);
+                intent.putExtra("recipe_id", recipe.getId());
+                startActivity(intent);
+            });
+            recyclerView.setAdapter(adapter);
+        }
     }
 }
