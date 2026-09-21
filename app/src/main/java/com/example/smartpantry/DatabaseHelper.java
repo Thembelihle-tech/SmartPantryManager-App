@@ -141,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void seedRecipes(SQLiteDatabase db) {
         addRecipe(db, "Simple Ice Cream",
                 "1. Whip the cream until form. 2. Add condensed milk and vanilla extract. 3. Transfer to airtight container. 4. Freeze for 8-10 hours or overnight 5. Scoop and enjoy!",
-                new Object[][]{{"Whipping cream", 476, "g"}, {"condensed milk", 310, "g"}, {"vanilla extract", 4, "g"}});
+                new Object[][]{{"whipping cream", 476, "g"}, {"condensed milk", 310, "g"}, {"vanilla extract", 4, "g"}});
 
         addRecipe(db, "Grilled Cheese Sandwich",
                 "1. Butter bread. 2. Add cheese between slices. 3. Grill both sides until golden.",
@@ -155,7 +155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "1. Beat eggs. 2. Add chopped vegetables. 3. Cook in pan until set.",
                 new Object[][]{{"egg", 3, "pcs"}, {"onion", 1, "pcs"}, {"tomato", 1, "pcs"}, {"salt", 1, "g"}});
 
-        addRecipe(db, "Potato Hashbrown",
+        addRecipe(db, "Potato Hash",
                 "1. Dice potatoes. 2. Fry with onion until crisp. 3. Season and serve.",
                 new Object[][]{{"potato", 3, "pcs"}, {"onion", 1, "pcs"}, {"oil", 15, "ml"}});
 

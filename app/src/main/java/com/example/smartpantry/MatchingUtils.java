@@ -1,7 +1,13 @@
 package com.example.smartpantry;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+
 public class MatchingUtils {
     private static final Map<String, Object[]> UNIT_TABLE = new HashMap<>();
     static {
@@ -17,20 +23,29 @@ public class MatchingUtils {
         UNIT_TABLE.put("tbsp", new Object[]{"tsp", 2.0});
     }
 
+    private static final Set<String> COOKING_OILS = new HashSet<>(Arrays.asList(
+            "olive oil", "sunflower oil", "vegetable oil", "canola oil", "cooking oil"));
+
+    private static final double EPSILON =1e-9;
+
     public static String normalizeName(String rawName) {
-        if (rawName == null) return "";
-        String n = rawName.trim().toLowerCase();
+        String n = rawName.toLowerCase(Locale.ROOT)
+                .replaceAll("[^\\p{L}\\p{N}]+", " ")
+                .trim();
         if (n.endsWith("ies") && n.length() > 4) {
             n = n.substring(0, n.length() - 3) + "y";
         } else if ((n.endsWith("oes") || n.endsWith("ches") || n.endsWith("shes")) && n.length() > 4) {
             n = n.substring(0, n.length() - 2);
-        }else if (n.endsWith("s") && !n.endsWith("ss") && n.length() > 3){
+        } else if (n.endsWith("s") && !n.endsWith("ss") && n.length() > 3) {
             n = n.substring(0, n.length() - 1);
+        }
+        if (n.endsWith("ie") && n.length() > 3) {
+            n = n.substring(0, n.length() - 2) + "y";
         }
         return n;
     }
     private static String normalizeUnit(String unit) {
-        return unit == null ? "" : unit.trim().toLowerCase();
+        return unit == null ? "" : unit.trim().toLowerCase(Locale.ROOT);
     }
     public static double toBaseQuantity(double quantity, String unit) {
         Object[] entry = UNIT_TABLE.get(normalizeUnit(unit));
@@ -43,19 +58,36 @@ public class MatchingUtils {
         return entry == null ? normalizeUnit(unit) : (String) entry[0];
     }
 
-    public static boolean pantryCovers(Ingredients pantryItem, RecipeIngredients required) {
-        if (pantryItem == null) return false;
-        boolean namesMatch = normalizeName(pantryItem.getName())
-                .equals(normalizeName(required.getName()));
-        if (!namesMatch) return false;
-        String pantryFamily = baseUnitFamily(pantryItem.getUnit());
-        String requiredFamily = baseUnitFamily(required.getUnit());
+    public static boolean namesMatch(String pantryName, String requiredName){
+        String have = normalizeName(pantryName);
+        String need = normalizeName(requiredName);
+        if(have.isEmpty() || need.isEmpty()) return false;
+        if(have.equals(need)) return true;
+        return need.equals("oil") && COOKING_OILS.contains(have);
+    }
 
-        if (!pantryFamily.equals(requiredFamily)) {
-            return pantryItem.getQuantity() > 0;
-        }
-        double pantryBase = toBaseQuantity(pantryItem.getQuantity(), pantryItem.getUnit());
+    public static boolean pantryCovers(List<Ingredients> pantry, RecipeIngredients required) {
+        if(pantry == null || required == null) return false;
+        String requiredFamily = baseUnitFamily(required.getUnit());
         double requiredBase = toBaseQuantity(required.getQuantity(), required.getUnit());
-        return pantryBase >= requiredBase;
+        double haveInSameFamily = 0;
+
+        for(Ingredients item : pantry){
+            if(item == null || !namesMatch(item.getName(), required.getName())) continue;
+
+            if(baseUnitFamily(item.getUnit()).equals(requiredFamily)){
+                haveInSameFamily += toBaseQuantity(item.getQuantity(), item.getUnit());
+            }else if(item.getQuantity() > 0){
+                return true;
+            }
+        }
+        return haveInSameFamily + EPSILON >= requiredBase;
+    }
+    public static boolean recipeIsCovered(Recipes recipe, List<Ingredients> pantry) {
+        if (recipe == null) return false;
+        for (RecipeIngredients required : recipe.getIngredients()) {
+            if (!pantryCovers(pantry, required)) return false;
+        }
+        return true;
     }
 }
