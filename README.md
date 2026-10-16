@@ -39,6 +39,58 @@ SQLite because:
 * It is relational by nature, since recipes and their ingredients map cleanly to related tables.
 
 ## Data model
-pantry_items -> id(PK, auto), name, quantity, unit, expiry_date
-recipes -> id(PK, auto), name, steps
-recipe_ingredients -> id(PK, auto), recipe_id(FK -> recipes.id), name, quantity, unit
+* pantry_items -> id(PK, auto), name, quantity, unit, expiry_date
+* recipes -> id(PK, auto), name, steps
+* recipe_ingredients -> id(PK, auto), recipe_id(FK -> recipes.id), name, quantity, unit
+
+DatabaseHelper.java creates the tables, seeds the recipes on first run and provides the CRUD methods (addIngredient, getAllIngredients, updateIngredient, deleteIngredient, getAllRecipes). When the database version is increased then only the recipe tables are rebuilt and reseeded so the pantry data is preserved.
+
+## Project structure
+
+
+
+## Screens
+1. Pantry list
+2. Add/Edit Ingredient
+3. Suggested Recipes
+4. Recipe Detail
+5. Settings
+
+Navigation between screens uses Intents together with a bottom naviigation bar.
+
+## Tech stack
+* Language -> Java
+* IDE -> Android Studio
+* Min SDK/Target SDK -> 24 (Android 7.0)/34(Android 14)
+* Database -> SQLite(SQLiteOpenHelper)
+* UI -> RecyclerView, CardView, ConstraintLayout, Material Components, BottomNavigationView
+* Libraries -> AppCompat, Material, ConstraintLayout, RecyclerView, CardView
+
+## Setup and run instructions
+Prerequisites:
+* Android Studio
+* JDK (bundled with Android Studio)
+* An Android emulator (API 24+) or a physical Android device with USB debugging or wireless debugging enabled.
+* Internet connection for the first Gradle sync (to download dependencies)
+
+Steps:
+1. Clone the repository
+
+
+2. Open the project in Android Studio
+3. Sync Gradle: wait for the automatic sync to finish
+4. Select a device: create an emulator in Device Manager or plug in your phone.
+5. Run the app by clicking the green Run button.
+
+## Try the strict matching rule
+1. Open Recipes
+2. Go to Pantry and add bread (2 pcs), cheese (50 g) and butter (10 g).
+3. Return to Recipes you will see that Grilled cheese Sandwich now appears.
+4. Delete butter from the pantry and return to Recipes. The recipe disappears because one ingredient is now missing.
+
+
+# Author
+## Thembelihle Tili Nkosi
+402313573 BSc (Articulation)
+Richfield Graduate Institute of Technology
+Mobile App Development 700
