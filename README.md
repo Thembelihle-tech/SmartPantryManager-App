@@ -92,12 +92,12 @@ Prerequisites:
 
 Steps:
 1. Clone the repository
+https://github.com/Thembelihle-tech/SmartPantryManager-App.git
 
-
-2. Open the project in Android Studio
-3. Sync Gradle: wait for the automatic sync to finish
-4. Select a device: create an emulator in Device Manager or plug in your phone.
-5. Run the app by clicking the green Run button.
+3. Open the project in Android Studio
+4. Sync Gradle: wait for the automatic sync to finish
+5. Select a device: create an emulator in Device Manager or plug in your phone.
+6. Run the app by clicking the green Run button.
 
 ## Try the strict matching rule
 1. Open Recipes
