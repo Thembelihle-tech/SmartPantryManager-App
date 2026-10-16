@@ -46,7 +46,24 @@ SQLite because:
 DatabaseHelper.java creates the tables, seeds the recipes on first run and provides the CRUD methods (addIngredient, getAllIngredients, updateIngredient, deleteIngredient, getAllRecipes). When the database version is increased then only the recipe tables are rebuilt and reseeded so the pantry data is preserved.
 
 ## Project structure
-
+SmartPantryManager/
+└── app/src/main/
+    ├── java/com/example/smartpantry/
+    │   ├── PantryListActivity.java        # Launcher screen: pantry list (RecyclerView)
+    │   ├── AddEditIngredientActivity.java # Add / edit form with input validation
+    │   ├── SuggestedRecipesActivity.java  # Runs strict matching, shows suggestions
+    │   ├── RecipeDetailActivity.java      # Full recipe: image, ingredients, method
+    │   ├── SettingsActivity.java          # Preferences (SharedPreferences)
+    │   ├── PantryAdapter.java             # RecyclerView adapter for pantry items
+    │   ├── RecipeAdapter.java             # RecyclerView adapter for recipes
+    │   ├── DatabaseHelper.java            # SQLite schema, seed data, CRUD
+    │   ├── MatchingUtils.java             # Strict-matching business logic
+    │   └── Ingredients / Recipes / RecipeIngredients.java  # Model classes
+    └── res/
+        ├── layout/    # Activity and list-item layouts
+        ├── menu/      # Bottom navigation menus
+        ├── drawable/  # Icons and recipe images
+        └── values/    # Colours, strings, themes, unit arrays
 
 
 ## Screens
